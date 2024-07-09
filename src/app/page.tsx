@@ -1,125 +1,172 @@
-"use client"; // Add this directive at the top
+"use client"; 
 
 import { useState } from 'react';
 import Head from 'next/head';
-import styles from '../styles/home.module.css';
 
-const Home = () => {
-  const [stage, setStage] = useState('introduction');
+const HomePage = () => {
+  const [stage, setStage] = useState<number>(0);
   const [skills, setSkills] = useState<string[]>([]);
   const [education, setEducation] = useState<string[]>([]);
   const [experience, setExperience] = useState<string[]>([]);
   const [hobbies, setHobbies] = useState<string[]>([]);
-  const [jobAd, setJobAd] = useState('');
+  const [jobAd, setJobAd] = useState<string>('');
 
-  const handleAddSkill = (skill: string) => {
-    setSkills([...skills, skill]);
+  const addItem = (list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>, item: string) => {
+    if (item) {
+      setList([...list, item]);
+    }
   };
 
-  const handleAddEducation = (edu: string) => {
-    setEducation([...education, edu]);
-  };
-
-  const handleAddExperience = (exp: string) => {
-    setExperience([...experience, exp]);
-  };
-
-  const handleAddHobby = (hobby: string) => {
-    setHobbies([...hobbies, hobby]);
-  };
-
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Resumeister</title>
-        <link rel="stylesheet" href="/styles.css" />
-      </Head>
-      <div className={styles.innerContainer}>
-        <div className={`${styles.stage} ${stage === 'introduction' ? styles.activeStage : ''}`}>
+  const stages = [
+    {
+      id: "introduction",
+      content: (
+        <>
           <h2>Resumeister</h2>
           <p>A website that makes custom resumes using your own words</p>
-          <button onClick={() => setStage('skills')}>Alright... I'll bite - tell me more</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'skills' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(1)}>Alright... I'll bite - tell me more</button>
+        </>
+      )
+    },
+    {
+      id: "skills",
+      content: (
+        <>
           <h2>Skills</h2>
           <input type="text" id="skills-input" placeholder="Enter a skill" />
-          <button onClick={() => handleAddSkill((document.getElementById('skills-input') as HTMLInputElement).value)}>Add Skill</button>
-          <ul>
-            {skills.map((skill, index) => <li key={index}>{skill}</li>)}
+          <button onClick={() => addItem(skills, setSkills, document.getElementById('skills-input')?.value || '')}>Add Skill</button>
+          <ul id="skills-list">
+            {skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
           </ul>
-          <button onClick={() => setStage('education')} disabled={skills.length === 0}>Next - edu</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'education' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(0)}>Back</button>
+          <button onClick={() => setStage(2)} disabled={skills.length === 0}>Next - edu</button>
+        </>
+      )
+    },
+    {
+      id: "education",
+      content: (
+        <>
           <h2>Education</h2>
           <input type="text" id="education-input" placeholder="Enter an education detail" />
-          <button onClick={() => handleAddEducation((document.getElementById('education-input') as HTMLInputElement).value)}>Add Education</button>
-          <ul>
-            {education.map((edu, index) => <li key={index}>{edu}</li>)}
+          <button onClick={() => addItem(education, setEducation, document.getElementById('education-input')?.value || '')}>Add Education</button>
+          <ul id="education-list">
+            {education.map((edu, index) => (
+              <li key={index}>{edu}</li>
+            ))}
           </ul>
-          <button onClick={() => setStage('skills')}>Back</button>
-          <button onClick={() => setStage('experience')} disabled={education.length === 0}>Next - experience</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'experience' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(1)}>Back</button>
+          <button onClick={() => setStage(3)} disabled={education.length === 0}>Next - experience</button>
+        </>
+      )
+    },
+    {
+      id: "experience",
+      content: (
+        <>
           <h2>Experience</h2>
           <input type="text" id="experience-input" placeholder="Enter an experience detail" />
-          <button onClick={() => handleAddExperience((document.getElementById('experience-input') as HTMLInputElement).value)}>Add Experience</button>
-          <ul>
-            {experience.map((exp, index) => <li key={index}>{exp}</li>)}
+          <button onClick={() => addItem(experience, setExperience, document.getElementById('experience-input')?.value || '')}>Add Experience</button>
+          <ul id="experience-list">
+            {experience.map((exp, index) => (
+              <li key={index}>{exp}</li>
+            ))}
           </ul>
-          <button onClick={() => setStage('education')}>Back</button>
-          <button onClick={() => setStage('hobbies')} disabled={experience.length === 0}>Next - hobbies</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'hobbies' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(2)}>Back</button>
+          <button onClick={() => setStage(4)} disabled={experience.length === 0}>Next - hobbies</button>
+        </>
+      )
+    },
+    {
+      id: "hobbies",
+      content: (
+        <>
           <h2>Hobbies</h2>
           <input type="text" id="hobbies-input" placeholder="Enter a hobby" />
-          <button onClick={() => handleAddHobby((document.getElementById('hobbies-input') as HTMLInputElement).value)}>Add Hobby</button>
-          <ul>
-            {hobbies.map((hobby, index) => <li key={index}>{hobby}</li>)}
+          <button onClick={() => addItem(hobbies, setHobbies, document.getElementById('hobbies-input')?.value || '')}>Add Hobby</button>
+          <ul id="hobbies-list">
+            {hobbies.map((hobby, index) => (
+              <li key={index}>{hobby}</li>
+            ))}
           </ul>
-          <button onClick={() => setStage('experience')}>Back</button>
-          <button onClick={() => setStage('jobAd')} disabled={hobbies.length === 0}>Next - paste ad</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'jobAd' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(3)}>Back</button>
+          <button onClick={() => setStage(5)} disabled={hobbies.length === 0}>Next - paste ad</button>
+        </>
+      )
+    },
+    {
+      id: "job-ad",
+      content: (
+        <>
           <h2>Job Advert</h2>
-          <textarea id="job-ad-input" placeholder="Paste a job advert here" onChange={(e) => setJobAd(e.target.value)}></textarea>
-          <button onClick={() => setStage('hobbies')}>Back</button>
-          <button onClick={() => setStage('processing')}>Next</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'processing' ? styles.activeStage : ''}`}>
+          <textarea id="job-ad-input" placeholder="Paste a job advert here" value={jobAd} onChange={(e) => setJobAd(e.target.value)}></textarea>
+          <button onClick={() => setStage(4)}>Back</button>
+          <button onClick={() => setStage(6)}>Next</button>
+        </>
+      )
+    },
+    {
+      id: "processing",
+      content: (
+        <>
           <h2>Processing</h2>
           <p>Processing your profile...</p>
-          <button onClick={() => setStage('jobAd')}>Back</button>
-          <button onClick={() => setStage('results')}>Next</button>
-        </div>
-
-        <div className={`${styles.stage} ${stage === 'results' ? styles.activeStage : ''}`}>
+          <button onClick={() => setStage(5)}>Back</button>
+          <button onClick={() => setStage(7)}>Next</button>
+        </>
+      )
+    },
+    {
+      id: "results",
+      content: (
+        <>
           <h2>Results</h2>
           <p>These are your collected details:</p>
-          <ul>
-            {skills.map((skill, index) => <li key={index}>{skill}</li>)}
-            {education.map((edu, index) => <li key={index}>{edu}</li>)}
-            {experience.map((exp, index) => <li key={index}>{exp}</li>)}
-            {hobbies.map((hobby, index) => <li key={index}>{hobby}</li>)}
+          <ul id="results-list">
+            {skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+            {education.map((edu, index) => (
+              <li key={index}>{edu}</li>
+            ))}
+            {experience.map((exp, index) => (
+              <li key={index}>{exp}</li>
+            ))}
+            {hobbies.map((hobby, index) => (
+              <li key={index}>{hobby}</li>
+            ))}
+            <li>{jobAd}</li>
           </ul>
-          <button onClick={() => setStage('processing')}>Back</button>
+          <button onClick={() => setStage(6)}>Back</button>
           <button id="download-resume">Download Resume</button>
-        </div>
+        </>
+      )
+    }
+  ];
 
-        <p className={styles.credit}>background photo by{' '}
+  return (
+    <>
+      <Head>
+        <title>Resumeister</title>
+        <meta name="description" content="A website that makes custom resumes using your own words" />
+      </Head>
+      <div className="font-sans text-sky-50 bg-black bg-custom-pattern bg-center bg-no-repeat bg-cover text-center m-0 p-0 flex flex-col justify-center items-center min-h-screen">
+        {stages[stage].content}
+        <p className="credit">
+          background photo by{' '}
           <a href="https://unsplash.com/@paulearlephotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
-            paul earle</a> on{' '}
+            paul earle
+          </a>{' '}
+          on{' '}
           <a href="https://unsplash.com/photos/mountain-dew-during-sunrise-xJ2tjuUHD9M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
-            unsplash</a>
+            unsplash
+          </a>
         </p>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Home;
+export default HomePage;

@@ -2,32 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  body {
+    @apply font-sans text-sky-50 bg-black bg-custom-pattern bg-center bg-no-repeat bg-cover text-center m-0 p-0 flex flex-col justify-center items-center min-h-screen;
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+  img {
+    @apply block mx-auto w-1/2;
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .container {
+    @apply flex-1 flex flex-col justify-center w-full h-full;
+  }
+
+  .credit {
+    @apply text-center mt-auto;
+  }
+
+  .question-box {
+    @apply relative bg-opacity-80 bg-blue-900 p-5 rounded-lg text-center;
+  }
+
+  .blinking-cursor {
+    @apply font-bold text-2xl;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  #less-is-more {
+    @apply absolute top-[-50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-2xl mb-2 text-blue-600 opacity-0 transition-opacity duration-1000;
+  }
+
+  #question-text-container {
+    @apply inline-flex items-center;
+  }
+
+  #question-text {
+    @apply text-sky-50 text-2xl mb-5 transition-opacity duration-1000;
+  }
+
+  .hidden {
+    @apply hidden;
+  }
+
+  #user-input {
+    @apply w-[70ch] p-2.5 text-lg border border-gray-300 rounded-md transition-opacity duration-1000 text-center box-border;
+  }
+
+  #next-button, #clear-button {
+    @apply mt-5 py-2.5 px-5 text-lg cursor-pointer;
+  }
+
+  #input-count {
+    @apply mt-2.5 text-base;
+  }
+
+  .shake {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+  }
+
+/*  .stage {
+    @apply hidden;
+  }
+
+  .active-stage {
+    @apply block;
+  }
+*/
+  #introduction {
+    @apply text-center p-5;
   }
 }

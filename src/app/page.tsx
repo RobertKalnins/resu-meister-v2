@@ -1,113 +1,125 @@
-import Image from "next/image";
+"use client"; // Add this directive at the top
 
-export default function Home() {
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../styles/home.module.css';
+
+const Home = () => {
+  const [stage, setStage] = useState('introduction');
+  const [skills, setSkills] = useState<string[]>([]);
+  const [education, setEducation] = useState<string[]>([]);
+  const [experience, setExperience] = useState<string[]>([]);
+  const [hobbies, setHobbies] = useState<string[]>([]);
+  const [jobAd, setJobAd] = useState('');
+
+  const handleAddSkill = (skill: string) => {
+    setSkills([...skills, skill]);
+  };
+
+  const handleAddEducation = (edu: string) => {
+    setEducation([...education, edu]);
+  };
+
+  const handleAddExperience = (exp: string) => {
+    setExperience([...experience, exp]);
+  };
+
+  const handleAddHobby = (hobby: string) => {
+    setHobbies([...hobbies, hobby]);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className={styles.container}>
+      <Head>
+        <title>Resumeister</title>
+        <link rel="stylesheet" href="/styles.css" />
+      </Head>
+      <div className={styles.innerContainer}>
+        <div className={`${styles.stage} ${stage === 'introduction' ? styles.activeStage : ''}`}>
+          <h2>Resumeister</h2>
+          <p>A website that makes custom resumes using your own words</p>
+          <button onClick={() => setStage('skills')}>Alright... I'll bite - tell me more</button>
         </div>
+
+        <div className={`${styles.stage} ${stage === 'skills' ? styles.activeStage : ''}`}>
+          <h2>Skills</h2>
+          <input type="text" id="skills-input" placeholder="Enter a skill" />
+          <button onClick={() => handleAddSkill((document.getElementById('skills-input') as HTMLInputElement).value)}>Add Skill</button>
+          <ul>
+            {skills.map((skill, index) => <li key={index}>{skill}</li>)}
+          </ul>
+          <button onClick={() => setStage('education')} disabled={skills.length === 0}>Next - edu</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'education' ? styles.activeStage : ''}`}>
+          <h2>Education</h2>
+          <input type="text" id="education-input" placeholder="Enter an education detail" />
+          <button onClick={() => handleAddEducation((document.getElementById('education-input') as HTMLInputElement).value)}>Add Education</button>
+          <ul>
+            {education.map((edu, index) => <li key={index}>{edu}</li>)}
+          </ul>
+          <button onClick={() => setStage('skills')}>Back</button>
+          <button onClick={() => setStage('experience')} disabled={education.length === 0}>Next - experience</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'experience' ? styles.activeStage : ''}`}>
+          <h2>Experience</h2>
+          <input type="text" id="experience-input" placeholder="Enter an experience detail" />
+          <button onClick={() => handleAddExperience((document.getElementById('experience-input') as HTMLInputElement).value)}>Add Experience</button>
+          <ul>
+            {experience.map((exp, index) => <li key={index}>{exp}</li>)}
+          </ul>
+          <button onClick={() => setStage('education')}>Back</button>
+          <button onClick={() => setStage('hobbies')} disabled={experience.length === 0}>Next - hobbies</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'hobbies' ? styles.activeStage : ''}`}>
+          <h2>Hobbies</h2>
+          <input type="text" id="hobbies-input" placeholder="Enter a hobby" />
+          <button onClick={() => handleAddHobby((document.getElementById('hobbies-input') as HTMLInputElement).value)}>Add Hobby</button>
+          <ul>
+            {hobbies.map((hobby, index) => <li key={index}>{hobby}</li>)}
+          </ul>
+          <button onClick={() => setStage('experience')}>Back</button>
+          <button onClick={() => setStage('jobAd')} disabled={hobbies.length === 0}>Next - paste ad</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'jobAd' ? styles.activeStage : ''}`}>
+          <h2>Job Advert</h2>
+          <textarea id="job-ad-input" placeholder="Paste a job advert here" onChange={(e) => setJobAd(e.target.value)}></textarea>
+          <button onClick={() => setStage('hobbies')}>Back</button>
+          <button onClick={() => setStage('processing')}>Next</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'processing' ? styles.activeStage : ''}`}>
+          <h2>Processing</h2>
+          <p>Processing your profile...</p>
+          <button onClick={() => setStage('jobAd')}>Back</button>
+          <button onClick={() => setStage('results')}>Next</button>
+        </div>
+
+        <div className={`${styles.stage} ${stage === 'results' ? styles.activeStage : ''}`}>
+          <h2>Results</h2>
+          <p>These are your collected details:</p>
+          <ul>
+            {skills.map((skill, index) => <li key={index}>{skill}</li>)}
+            {education.map((edu, index) => <li key={index}>{edu}</li>)}
+            {experience.map((exp, index) => <li key={index}>{exp}</li>)}
+            {hobbies.map((hobby, index) => <li key={index}>{hobby}</li>)}
+          </ul>
+          <button onClick={() => setStage('processing')}>Back</button>
+          <button id="download-resume">Download Resume</button>
+        </div>
+
+        <p className={styles.credit}>background photo by{' '}
+          <a href="https://unsplash.com/@paulearlephotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+            paul earle</a> on{' '}
+          <a href="https://unsplash.com/photos/mountain-dew-during-sunrise-xJ2tjuUHD9M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+            unsplash</a>
+        </p>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default Home;

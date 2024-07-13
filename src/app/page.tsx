@@ -155,7 +155,7 @@ const HomePage = () => {
         <title>Resumeister</title>
         <meta name="description" content="A website that makes custom resumes using your own words" />
       </Head>
-      <div className="font-mono font-medium text-4xl text-slate-700 bg-black bg-custom-pattern bg-center bg-no-repeat bg-cover text-center m-0 p-0 flex flex-col justify-center items-center min-h-screen">
+      <div className="font-mono font-medium text-4xl text-slate-700 bg-black bg-custom-pattern bg-center bg-no-repeat bg-cover text-center m-0 p-0 flex flex-col justify-center min-h-screen">
         {stages[stage].content}
         <p className="credit">
           background photo by{' '}

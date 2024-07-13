@@ -1,7 +1,10 @@
+/* page.tsx */
 "use client"; 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Introduction from './introduction';
+import introductionLines from './introduction-lines'; // Import the lines
 
 const HomePage = () => {
   const [stage, setStage] = useState<number>(0);
@@ -22,11 +25,10 @@ const HomePage = () => {
     {
       id: "introduction",
       content: (
-        <>
-          <h2>Resumeister</h2>
-          <p>A website that makes custom resumes using your own words</p>
-          <button onClick={() => setStage(1)}>Alright... I&apos;ll bite - tell me more</button>
-        </>
+        <Introduction 
+          lines={introductionLines} 
+          onFinish={() => setStage(1)} 
+        />
       )
     },
     {

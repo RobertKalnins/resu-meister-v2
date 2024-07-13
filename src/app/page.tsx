@@ -11,9 +11,10 @@ const HomePage = () => {
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [jobAd, setJobAd] = useState<string>('');
 
-  const addItem = (list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>, item: string) => {
-    if (item) {
-      setList([...list, item]);
+  const addItem = (list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>, itemId: string) => {
+    const inputElement = document.getElementById(itemId) as HTMLInputElement | null;
+    if (inputElement && inputElement.value) {
+       setList([...list, inputElement.value]);
     }
   };
 
@@ -24,7 +25,7 @@ const HomePage = () => {
         <>
           <h2>Resumeister</h2>
           <p>A website that makes custom resumes using your own words</p>
-          <button onClick={() => setStage(1)}>Alright... I'll bite - tell me more</button>
+          <button onClick={() => setStage(1)}>Alright... I&apos;ll bite - tell me more</button>
         </>
       )
     },
@@ -34,7 +35,7 @@ const HomePage = () => {
         <>
           <h2>Skills</h2>
           <input type="text" id="skills-input" placeholder="Enter a skill" />
-          <button onClick={() => addItem(skills, setSkills, document.getElementById('skills-input')?.value || '')}>Add Skill</button>
+          <button onClick={() => addItem(skills, setSkills, 'skills-input')}>Add Skill</button>
           <ul id="skills-list">
             {skills.map((skill, index) => (
               <li key={index}>{skill}</li>
@@ -51,7 +52,7 @@ const HomePage = () => {
         <>
           <h2>Education</h2>
           <input type="text" id="education-input" placeholder="Enter an education detail" />
-          <button onClick={() => addItem(education, setEducation, document.getElementById('education-input')?.value || '')}>Add Education</button>
+          <button onClick={() => addItem(education, setEducation, 'education-input')}>Add Education</button>
           <ul id="education-list">
             {education.map((edu, index) => (
               <li key={index}>{edu}</li>
@@ -68,7 +69,7 @@ const HomePage = () => {
         <>
           <h2>Experience</h2>
           <input type="text" id="experience-input" placeholder="Enter an experience detail" />
-          <button onClick={() => addItem(experience, setExperience, document.getElementById('experience-input')?.value || '')}>Add Experience</button>
+          <button onClick={() => addItem(experience, setExperience, 'experience-input')}>Add Experience</button>
           <ul id="experience-list">
             {experience.map((exp, index) => (
               <li key={index}>{exp}</li>
@@ -85,7 +86,7 @@ const HomePage = () => {
         <>
           <h2>Hobbies</h2>
           <input type="text" id="hobbies-input" placeholder="Enter a hobby" />
-          <button onClick={() => addItem(hobbies, setHobbies, document.getElementById('hobbies-input')?.value || '')}>Add Hobby</button>
+          <button onClick={() => addItem(hobbies, setHobbies, 'hobbies-input')}>Add Hobby</button>
           <ul id="hobbies-list">
             {hobbies.map((hobby, index) => (
               <li key={index}>{hobby}</li>

@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply font-sans text-sky-50 bg-black bg-custom-pattern bg-center bg-no-repeat bg-cover text-center m-0 p-0 flex flex-col justify-center items-center min-h-screen;
-  }
-
   img {
     @apply block mx-auto w-1/2;
   }
@@ -20,7 +16,7 @@
   }
 
   .question-box {
-    @apply relative bg-opacity-80 bg-blue-900 p-5 rounded-lg text-center;
+    @apply relative p-5 rounded-lg text-center;
   }
 
   .blinking-cursor {

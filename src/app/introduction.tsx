@@ -8,12 +8,18 @@ interface IntroductionProps {
 
 const Introduction: React.FC<IntroductionProps> = ({ lines, onFinish }) => {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (currentLineIndex < lines.length) {
       const timer = setTimeout(() => {
-        setCurrentLineIndex(currentLineIndex + 1);
-      }, 2000); // Change delay as needed
+        setIsVisible(false);
+        const fadeOutTimer = setTimeout(() => {
+          setCurrentLineIndex(currentLineIndex + 1);
+          setIsVisible(true);
+        }, 1000); // 1 second fade-out time
+        return () => clearTimeout(fadeOutTimer);
+      }, 5000); // 3 seconds display time
       return () => clearTimeout(timer);
     } else {
       onFinish();
@@ -21,10 +27,15 @@ const Introduction: React.FC<IntroductionProps> = ({ lines, onFinish }) => {
   }, [currentLineIndex, lines, onFinish]);
 
   return (
-    <div>
-      {lines.slice(0, currentLineIndex).map((line, index) => (
-        <p key={index}>{line}</p>
-      ))}
+    <div className="relative h-screen flex items-center px-4 justify-center"> {/* Adjust height as needed */}
+      {currentLineIndex < lines.length && (
+        <p
+          key={currentLineIndex}
+          className={`absolute text-white transition-opacity duration-1000 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {lines[currentLineIndex]}
+        </p>
+      )}
     </div>
   );
 };

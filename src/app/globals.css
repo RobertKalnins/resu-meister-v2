@@ -12,7 +12,7 @@
   }
 
   .credit {
-    @apply text-center mt-auto;
+    @apply text-sky-100 text-lg font-light text-center mt-auto;
   }
 
   .question-box {
